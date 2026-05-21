@@ -1,0 +1,305 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const flyerExamples = [
+  { img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=90", name: "Bioliffe Moringa", price: "$249", before: "$350" },
+  { img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=90", name: "Whey Protein", price: "$599", before: "$800" },
+  { img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&q=90", name: "Crema Facial", price: "$189", before: "$290" },
+  { img: "https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&q=90", name: "Vitaminas", price: "$349", before: "$500" },
+  { img: "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=400&q=90", name: "Aceite Natural", price: "$420", before: "$600" },
+  { img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400&q=90", name: "Colágeno Plus", price: "$299", before: "$450" },
+  { img: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&q=90", name: "Vitamina C", price: "$129", before: "$200" },
+  { img: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=90", name: "Sérum Facial", price: "$389", before: "$550" },
+];
+
+function PhoneMockup({ img, name, price, before }: { img: string; name: string; price: string; before: string }) {
+  return (
+    <div className="relative flex-shrink-0 w-[160px] h-[300px] group cursor-pointer">
+      {/* Marco del celular */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900 rounded-[2.5rem] border-4 border-gray-700 shadow-2xl overflow-hidden">
+        {/* Notch */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-20"/>
+        {/* Pantalla */}
+        <div className="absolute inset-1 rounded-[2rem] overflow-hidden">
+          <img src={img} alt={name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"/>
+          {/* Badge OFERTA */}
+          <div className="absolute top-6 right-3 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full">
+            OFERTA
+          </div>
+          {/* Badge IA */}
+          <div className="absolute top-6 left-3 bg-black/60 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded-full border border-white/20">
+            ✨ IA
+          </div>
+          {/* Info producto */}
+          <div className="absolute bottom-0 left-0 right-0 p-3">
+            <p className="text-white font-bold text-xs mb-0.5">{name}</p>
+            <div className="flex items-center gap-1.5 mb-2">
+              <p className="text-gray-400 text-[10px] line-through">{before}</p>
+              <p className="text-white font-black text-base">{price}</p>
+            </div>
+            <div className="w-full bg-white/20 backdrop-blur-sm rounded-full py-1 text-[10px] text-white text-center border border-white/20">
+              Ver oferta →
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Botón lateral del celular */}
+      <div className="absolute -right-1 top-16 w-1 h-8 bg-gray-700 rounded-full"/>
+      <div className="absolute -left-1 top-14 w-1 h-6 bg-gray-700 rounded-full"/>
+      <div className="absolute -left-1 top-22 w-1 h-6 bg-gray-700 rounded-full"/>
+    </div>
+  );
+}
+
+const PAISES = [
+  { group: "América Latina", options: ["🇲🇽 México — MXN","🇨🇴 Colombia — COP","🇦🇷 Argentina — ARS","🇵🇪 Perú — PEN","🇨🇱 Chile — CLP","🇵🇾 Paraguay — PYG","🇺🇾 Uruguay — UYU","🇧🇴 Bolivia — BOB","🇻🇪 Venezuela — USD","🇪🇨 Ecuador — USD","🇬🇹 Guatemala — GTQ","🇭🇳 Honduras — HNL","🇸🇻 El Salvador — USD","🇳🇮 Nicaragua — NIO","🇨🇷 Costa Rica — CRC","🇵🇦 Panamá — USD","🇩🇴 Rep. Dominicana — DOP","🇨🇺 Cuba — CUP","🇵🇷 Puerto Rico — USD","🇧🇷 Brasil — BRL"] },
+  { group: "América del Norte", options: ["🇺🇸 USA — USD","🇨🇦 Canadá — CAD"] },
+  { group: "Europa", options: ["🇪🇸 España — EUR","🇵🇹 Portugal — EUR","🇫🇷 Francia — EUR","🇩🇪 Alemania — EUR","🇮🇹 Italia — EUR","🇬🇧 Reino Unido — GBP","🇨🇭 Suiza — CHF","🇸🇪 Suecia — SEK","🇳🇴 Noruega — NOK","🇩🇰 Dinamarca — DKK","🇷🇺 Rusia — RUB","🇹🇷 Turquía — TRY","🇵🇱 Polonia — PLN","🇳🇱 Países Bajos — EUR","🇧🇪 Bélgica — EUR","🇦🇹 Austria — EUR","🇬🇷 Grecia — EUR","🇷🇴 Rumania — RON","🇨🇿 Rep. Checa — CZK","🇭🇺 Hungría — HUF","🇺🇦 Ucrania — UAH"] },
+  { group: "Asia", options: ["🇯🇵 Japón — JPY","🇨🇳 China — CNY","🇮🇳 India — INR","🇰🇷 Corea del Sur — KRW","🇸🇬 Singapur — SGD","🇲🇾 Malasia — MYR","🇵🇭 Filipinas — PHP","🇹🇭 Tailandia — THB","🇮🇩 Indonesia — IDR","🇻🇳 Vietnam — VND","🇵🇰 Pakistán — PKR","🇧🇩 Bangladesh — BDT","🇸🇦 Arabia Saudita — SAR","🇦🇪 Emiratos Árabes — AED","🇮🇱 Israel — ILS","🇶🇦 Qatar — QAR","🇰🇼 Kuwait — KWD"] },
+  { group: "África", options: ["🇿🇦 Sudáfrica — ZAR","🇳🇬 Nigeria — NGN","🇰🇪 Kenia — KES","🇪🇬 Egipto — EGP","🇲🇦 Marruecos — MAD","🇬🇭 Ghana — GHS","🇹🇿 Tanzania — TZS","🇪🇹 Etiopía — ETB"] },
+  { group: "Oceanía", options: ["🇦🇺 Australia — AUD","🇳🇿 Nueva Zelanda — NZD"] },
+];
+
+const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 transition-all text-sm";
+
+export default function Home() {
+  const router = useRouter();
+  const [step, setStep] = useState(1);
+
+  return (
+    <main className="min-h-screen bg-[#070711] text-white overflow-x-hidden">
+
+      {/* FONDO */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"/>
+        <div className="absolute top-32 right-1/4 w-80 h-80 bg-pink-600/8 rounded-full blur-3xl"/>
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl"/>
+      </div>
+
+      {/* NAVBAR */}
+      <nav className="relative z-50 flex items-center justify-between px-8 py-4 border-b border-white/5 backdrop-blur-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-sm font-black">F</div>
+          <span className="font-bold text-lg tracking-tight">FlyerAI</span>
+        </div>
+        <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
+          <a href="#" className="hover:text-white transition-colors">Funciones</a>
+          <a href="#" className="hover:text-white transition-colors">Precios</a>
+          <a href="#" className="hover:text-white transition-colors">Ejemplos</a>
+        </div>
+        <div className="flex items-center gap-3">
+          <button className="text-sm text-gray-400 hover:text-white transition-colors">Iniciar sesión</button>
+          <button
+            onClick={() => router.push("/crear")}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-purple-500/20">
+            Empezar gratis →
+          </button>
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section className="relative text-center px-6 pt-20 pb-10">
+        <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs px-4 py-2 rounded-full mb-8 font-medium">
+          <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"/>
+          Generador de Flyers + Landing Pages con IA
+        </div>
+        <h1 className="text-6xl font-black max-w-4xl mx-auto leading-[1.05] mb-6 tracking-tight">
+          Crea flyers que
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400"> convierten </span>
+          <br/>en segundos
+        </h1>
+        <p className="text-gray-400 text-lg max-w-lg mx-auto mb-8 leading-relaxed">
+          Sube tu producto, escribe los datos y la IA genera el flyer 9:16, landing page optimizada y copy para Meta Ads listo para publicar.
+        </p>
+        <button
+          onClick={() => router.push("/crear")}
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-xl shadow-purple-500/30 mb-12">
+          ✨ Crear mi flyer ahora →
+        </button>
+
+        {/* STATS */}
+        <div className="flex justify-center gap-12 mb-4">
+          {[
+            { num: "12,400+", label: "Flyers generados" },
+            { num: "60+", label: "Países" },
+            { num: "30s", label: "Tiempo promedio" },
+            { num: "98%", label: "Satisfacción" },
+          ].map(({ num, label }) => (
+            <div key={label} className="text-center">
+              <p className="text-2xl font-black text-white">{num}</p>
+              <p className="text-gray-500 text-xs mt-0.5">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CINTA DE CELULARES */}
+      <div className="relative w-full overflow-hidden py-8 mb-20">
+        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#070711] to-transparent z-10 pointer-events-none"/>
+        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#070711] to-transparent z-10 pointer-events-none"/>
+        <div className="flex items-end gap-6 animate-marquee w-max px-8">
+          {[...flyerExamples, ...flyerExamples, ...flyerExamples].map((f, i) => (
+            <div
+              key={i}
+              style={{ transform: i % 2 === 0 ? "rotate(-4deg)" : "rotate(4deg)", marginBottom: i % 2 === 0 ? "0px" : "20px" }}
+            >
+              <PhoneMockup {...f} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* FORMULARIO */}
+      <section className="relative px-6 pb-24">
+        <div className="max-w-md mx-auto">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none"/>
+          <div className="relative bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+
+            <div className="text-center mb-8">
+              <h2 className="text-xl font-bold mb-1">Genera tu flyer ahora</h2>
+              <p className="text-gray-500 text-sm">Gratis — sin tarjeta de crédito</p>
+            </div>
+
+            {/* Pasos */}
+            <div className="flex items-center justify-center gap-0 mb-8">
+              {["Producto", "Precio", "Foto"].map((label, i) => {
+                const n = i + 1;
+                const active = step >= n;
+                const current = step === n;
+                return (
+                  <div key={n} className="flex items-center">
+                    <div className="flex flex-col items-center">
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${active ? "bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30" : "bg-white/5 text-gray-600 border border-white/10"} ${current ? "scale-110" : ""}`}>
+                        {step > n ? "✓" : n}
+                      </div>
+                      <span className={`text-[10px] mt-1 transition-colors ${active ? "text-purple-400" : "text-gray-600"}`}>{label}</span>
+                    </div>
+                    {n < 3 && <div className={`w-16 h-px mb-4 mx-1 transition-all duration-500 ${step > n ? "bg-gradient-to-r from-purple-600 to-pink-600" : "bg-white/10"}`}/>}
+                  </div>
+                );
+              })}
+            </div>
+
+            {step === 1 && (
+              <div className="flex flex-col gap-4">
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Nombre del producto</label>
+                  <input className={inputClass} placeholder="Ej: Bioliffe Moringa"/>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Beneficios principales</label>
+                  <textarea className={inputClass} placeholder="Ej: Energía natural, desintoxica, fortalece el sistema inmune..." rows={3}/>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Objetivo del anuncio</label>
+                  <select className={inputClass}>
+                    <option value="ventas">🛒 Ventas directas</option>
+                    <option value="leads">📋 Conseguir contactos</option>
+                    <option value="whatsapp">💬 Mensajes por WhatsApp</option>
+                  </select>
+                </div>
+                <button onClick={() => setStep(2)} className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-bold py-4 rounded-xl text-sm mt-2 shadow-lg shadow-purple-500/20 transition-all">
+                  Continuar →
+                </button>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Precio antes</label>
+                    <input className={inputClass} placeholder="350"/>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Precio ahora</label>
+                    <input className={inputClass} placeholder="249"/>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">País y moneda</label>
+                  <select className={inputClass}>
+                    {PAISES.map(({ group, options }) => (
+                      <optgroup key={group} label={`— ${group} —`}>
+                        {options.map(o => <option key={o}>{o}</option>)}
+                      </optgroup>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">WhatsApp de contacto</label>
+                  <input className={inputClass} placeholder="Ej: 5215512345678"/>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mt-1">
+                  <button onClick={() => setStep(1)} className="bg-white/5 hover:bg-white/10 active:scale-95 text-white font-semibold py-3.5 rounded-xl text-sm transition-all border border-white/10">
+                    ← Atrás
+                  </button>
+                  <button onClick={() => setStep(3)} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg shadow-purple-500/20 transition-all">
+                    Continuar →
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="flex flex-col gap-4">
+                <div>
+                  <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Foto del producto</label>
+                  <label className="flex flex-col items-center justify-center w-full h-36 bg-white/3 border-2 border-dashed border-white/15 rounded-2xl cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all group">
+                    <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">📸</span>
+                    <span className="text-gray-400 text-sm font-medium">Haz clic para subir</span>
+                    <span className="text-gray-600 text-xs mt-0.5">PNG, JPG hasta 10MB</span>
+                    <input type="file" accept="image/*" className="hidden"/>
+                  </label>
+                </div>
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl p-4">
+                  <p className="text-sm font-semibold mb-3 text-purple-300">✨ La IA generará automáticamente:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { icon: "📱", text: "Flyer 9:16 HD" },
+                      { icon: "🌐", text: "Landing page" },
+                      { icon: "📝", text: "Copy Meta Ads" },
+                      { icon: "💬", text: "Botón WhatsApp" },
+                    ].map(({ icon, text }) => (
+                      <div key={text} className="flex items-center gap-2 text-xs text-gray-300">
+                        <span>{icon}</span><span>{text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <button onClick={() => setStep(2)} className="bg-white/5 hover:bg-white/10 active:scale-95 text-white font-semibold py-3.5 rounded-xl text-sm transition-all border border-white/10">
+                    ← Atrás
+                  </button>
+                  <button
+                    onClick={() => router.push("/crear")}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-black py-3.5 rounded-xl text-sm shadow-lg shadow-purple-500/30 transition-all">
+                    ✨ Generar con IA
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
+          <p className="text-center text-gray-600 text-xs mt-6">🔒 Tus datos están seguros · Sin spam · Cancela cuando quieras</p>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+    </main>
+  );
+}
