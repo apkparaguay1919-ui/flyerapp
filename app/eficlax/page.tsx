@@ -83,12 +83,10 @@ export default function EficlaxPage() {
           Pensé que era grasa… pero era inflamación. El detox natural con Moringa pura de Paraguay.
         </p>
 
-        {/* IMAGEN PRINCIPAL */}
         <div style={{ maxWidth:'420px', margin:'0 auto 36px', borderRadius:'24px', overflow:'hidden', border:'2px solid rgba(74,222,128,0.2)', boxShadow:'0 0 60px rgba(34,197,94,0.15)' }}>
           <img src="/hero2.jpg" alt="EFICLAX Detox" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
 
-        {/* BADGES */}
         <div style={{ display:'flex', gap:'10px', justifyContent:'center', flexWrap:'wrap', marginBottom:'40px' }}>
           {[
             { icon:'🚚', label:'Envío Gratis', sub:'Todo Paraguay' },
@@ -122,23 +120,34 @@ export default function EficlaxPage() {
       <section style={{ padding:'28px 20px', background:'rgba(34,197,94,0.03)', borderBottom:'1px solid rgba(34,197,94,0.08)' }}>
         <div style={{ maxWidth:'700px', margin:'0 auto', display:'flex', justifyContent:'center', alignItems:'center', gap:'12px', flexWrap:'wrap' }}>
           <span style={{ fontSize:'12px', color:'#6b7280', letterSpacing:'1px', fontWeight:'600' }}>RESPALDADO POR:</span>
-          <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'10px', padding:'8px 14px' }}>
-            <img src="/senave.webp" alt="SENAVE" style={{ width:'44px', height:'44px', objectFit:'contain' }} />
-            <div><div style={{ fontSize:'12px', fontWeight:'700', color:'#d1d5db' }}>SENAVE</div><div style={{ fontSize:'10px', color:'#6b7280' }}>Registrado</div></div>
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'10px', padding:'8px 14px' }}>
-            <img src="/inan.png" alt="INAN" style={{ width:'44px', height:'44px', objectFit:'contain' }} />
-            <div><div style={{ fontSize:'12px', fontWeight:'700', color:'#d1d5db' }}>INAN</div><div style={{ fontSize:'10px', color:'#6b7280' }}>Aprobado</div></div>
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'10px', padding:'8px 14px' }}>
-            <img src="/compra-segura.png" alt="Compra Segura" style={{ width:'44px', height:'44px', objectFit:'contain' }} />
-            <div><div style={{ fontSize:'12px', fontWeight:'700', color:'#d1d5db' }}>Compra Segura</div><div style={{ fontSize:'10px', color:'#6b7280' }}>100% garantizado</div></div>
-          </div>
+          {[
+            { src:'/senave.webp', name:'SENAVE', desc:'Registrado' },
+            { src:'/inan.png', name:'INAN', desc:'Aprobado' },
+            { src:'/compra-segura.png', name:'Compra Segura', desc:'100% garantizado' },
+          ].map(c => (
+            <div key={c.name} style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'10px', padding:'8px 14px' }}>
+              <img src={c.src} alt={c.name} style={{ width:'44px', height:'44px', objectFit:'contain' }} />
+              <div>
+                <div style={{ fontSize:'12px', fontWeight:'700', color:'#d1d5db' }}>{c.name}</div>
+                <div style={{ fontSize:'10px', color:'#6b7280' }}>{c.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* RESULTADOS */}
+      <section style={{ padding:'60px 20px', maxWidth:'860px', margin:'0 auto', textAlign:'center' }}>
+        <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'32px', textTransform:'uppercase' }}>
+          💪 Resultados <span style={{ color:'#4ade80' }}>Reales</span>
+        </h2>
+        <div style={{ borderRadius:'24px', overflow:'hidden', border:'2px solid rgba(74,222,128,0.2)', boxShadow:'0 0 40px rgba(34,197,94,0.1)' }}>
+          <img src="/resultados1.png" alt="Resultados EFICLAX" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
       </section>
 
       {/* OFERTA */}
-      <section style={{ padding:'60px 20px', maxWidth:'860px', margin:'0 auto', textAlign:'center' }}>
+      <section style={{ padding:'0 20px 60px', maxWidth:'860px', margin:'0 auto', textAlign:'center' }}>
         <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'32px', textTransform:'uppercase' }}>
           🔥 Oferta <span style={{ color:'#4ade80' }}>Especial</span>
         </h2>
@@ -170,6 +179,16 @@ export default function EficlaxPage() {
               <p style={{ fontSize:'13px', color:'#9ca3af', lineHeight:'1.6', margin:0 }}>{b.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* MODO DE USO */}
+      <section style={{ padding:'0 20px 60px', maxWidth:'860px', margin:'0 auto', textAlign:'center' }}>
+        <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'32px', textTransform:'uppercase' }}>
+          📋 Cómo <span style={{ color:'#4ade80' }}>Usarlo</span>
+        </h2>
+        <div style={{ borderRadius:'24px', overflow:'hidden', border:'2px solid rgba(74,222,128,0.15)' }}>
+          <img src="/mododeuso.png" alt="Cómo usar EFICLAX" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
       </section>
 
