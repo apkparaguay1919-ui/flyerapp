@@ -3,9 +3,36 @@
 import { useState } from 'react';
 
 const prices = [
-  { units: 1, price: 'Gs. 69.999', tag: null, savings: null },
-  { units: 2, price: 'Gs. 139.999', tag: 'MAS VENDIDO', savings: 'Ahorrás Gs. 10.000' },
-  { units: 3, price: 'Gs. 209.999', tag: 'AHORRA MAS', savings: 'Ahorrás Gs. 30.000' },
+  { 
+    units: 1, 
+    price: 'Gs. 69.999', 
+    tag: null, 
+    savings: null,
+    sobres: '5 sobres',
+    tomas: '5 tomas',
+    dias: '5 días',
+    ideal: 'Para probar'
+  },
+  { 
+    units: 2, 
+    price: 'Gs. 139.999', 
+    tag: 'MAS VENDIDO', 
+    savings: 'Ahorrás Gs. 10.000',
+    sobres: '10 sobres',
+    tomas: '10 tomas',
+    dias: '10 días',
+    ideal: 'Resultado visible'
+  },
+  { 
+    units: 3, 
+    price: 'Gs. 209.999', 
+    tag: 'AHORRA MAS', 
+    savings: 'Ahorrás Gs. 30.000',
+    sobres: '15 sobres',
+    tomas: '15 tomas',
+    dias: '15 días',
+    ideal: 'Transformación total'
+  },
 ];
 
 const benefits = [
@@ -35,9 +62,9 @@ export default function EficlaxPage() {
   const [form, setForm] = useState({ nombre: '', telefono: '', ciudad: '', direccion: '', pack: '' });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSelect = (units: number, price: string) => {
+  const handleSelect = (units: number, price: string, sobres: string, dias: string) => {
     setSelectedPack(units);
-    setForm(f => ({ ...f, pack: `x${units} - ${price}` }));
+    setForm(f => ({ ...f, pack: `x${units} tratamiento/s - ${price} - ${sobres} - ${dias}` }));
     setTimeout(() => document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
 
@@ -57,41 +84,24 @@ export default function EficlaxPage() {
           0%,100%{ transform:scale(1); box-shadow:0 4px 24px rgba(255,107,0,0.55), 0 0 0 0 rgba(255,107,0,0.3); }
           50%{ transform:scale(1.05); box-shadow:0 8px 32px rgba(255,107,0,0.7), 0 0 0 10px rgba(255,107,0,0); }
         }
-        @keyframes fadeInUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes glowPulse {
-          0%,100%{ opacity:0.15 }
-          50%{ opacity:0.28 }
-        }
+        @keyframes glowPulse { 0%,100%{ opacity:0.15 } 50%{ opacity:0.28 } }
         .cl { display:flex; width:max-content; animation:scrollLeft 22s linear infinite; }
         .cr { display:flex; width:max-content; animation:scrollRight 24s linear infinite; }
         .pc { transition:all 0.25s cubic-bezier(.4,0,.2,1); cursor:pointer; }
         .pc:hover { transform:translateY(-6px); }
         .wa-float { animation:pulseOrange 2.2s infinite; transition:transform 0.2s; }
         .wa-float:hover { transform:scale(1.1) !important; }
-        .fade-up { animation:fadeInUp 0.7s ease both; }
         .glow-bg { animation:glowPulse 4s ease infinite; }
+        .btn-main { transition:all 0.2s cubic-bezier(.4,0,.2,1); }
+        .btn-main:hover { transform:scale(1.03); }
         input { transition:border-color 0.2s, box-shadow 0.2s; }
         input:focus { outline:none; border-color:rgba(74,222,128,0.7) !important; box-shadow:0 0 0 3px rgba(74,222,128,0.12) !important; }
-        .btn-main { transition:all 0.2s cubic-bezier(.4,0,.2,1); }
-        .btn-main:hover { transform:scale(1.03); box-shadow:0 0 60px rgba(37,211,102,0.65) !important; }
         * { -webkit-tap-highlight-color: transparent; }
-        @media(max-width:480px){
-          .hero-title { font-size:2.8rem !important; }
-          .pack-grid { grid-template-columns:1fr !important; }
-        }
       `}</style>
 
-      {/* BOTÓN FLOTANTE WHATSAPP — NARANJA PREMIUM */}
+      {/* BOTÓN FLOTANTE */}
       <a href={quickWa} target="_blank" rel="noopener noreferrer" className="wa-float"
-        style={{
-          position:'fixed', bottom:'24px', right:'20px', zIndex:9999,
-          background:'linear-gradient(135deg,#ff6b00 0%,#ff8c00 100%)',
-          color:'#fff', borderRadius:'100px', padding:'13px 20px',
-          display:'flex', alignItems:'center', gap:'9px',
-          textDecoration:'none', fontWeight:'800', fontSize:'14px',
-          letterSpacing:'0.3px',
-          boxShadow:'0 4px 24px rgba(255,107,0,0.55)',
-        }}>
+        style={{ position:'fixed', bottom:'24px', right:'20px', zIndex:9999, background:'linear-gradient(135deg,#ff6b00,#ff8c00)', color:'#fff', borderRadius:'100px', padding:'13px 20px', display:'flex', alignItems:'center', gap:'9px', textDecoration:'none', fontWeight:'800', fontSize:'14px', boxShadow:'0 4px 24px rgba(255,107,0,0.55)' }}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
@@ -101,35 +111,27 @@ export default function EficlaxPage() {
       {/* CINTA 1 */}
       <div style={{ background:'linear-gradient(90deg,#22c55e,#16a34a)', overflow:'hidden', padding:'11px 0' }}>
         <div className="cl">
-          {cintas.map((item,i) => <span key={i} style={{ color:'#fff', fontWeight:'800', fontSize:'12px', letterSpacing:'2.5px', padding:'0 28px', whiteSpace:'nowrap', textShadow:'0 1px 2px rgba(0,0,0,0.2)' }}>{item}</span>)}
+          {cintas.map((item,i) => <span key={i} style={{ color:'#fff', fontWeight:'800', fontSize:'12px', letterSpacing:'2.5px', padding:'0 28px', whiteSpace:'nowrap' }}>{item}</span>)}
         </div>
       </div>
 
       {/* HERO */}
       <section style={{ background:'linear-gradient(175deg,#061206 0%,#0a2a0a 40%,#0d3d0d 70%,#061206 100%)', padding:'64px 20px 80px', textAlign:'center', position:'relative', overflow:'hidden' }}>
-        {/* Glow fondo */}
         <div className="glow-bg" style={{ position:'absolute', top:'-10%', left:'50%', transform:'translateX(-50%)', width:'80%', height:'60%', background:'radial-gradient(ellipse,rgba(34,197,94,0.22) 0%,transparent 70%)', pointerEvents:'none', borderRadius:'100%' }} />
         <div style={{ position:'relative', zIndex:1 }}>
           <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', background:'rgba(34,197,94,0.1)', border:'1px solid rgba(34,197,94,0.35)', borderRadius:'100px', padding:'7px 18px', fontSize:'12px', color:'#86efac', marginBottom:'22px', letterSpacing:'2px', fontWeight:'700' }}>
             🌿 BIOLIFFE MORINGA PARAGUAY
           </div>
-
-          <h1 className="hero-title fade-up" style={{ fontSize:'clamp(2.8rem,8vw,5.5rem)', fontWeight:'900', lineHeight:'1.0', margin:'0 0 16px', textTransform:'uppercase', letterSpacing:'-1.5px', color:'#ffffff' }}>
-            EFICLAX<br/>
-            <span style={{ color:'#4ade80', textShadow:'0 0 50px rgba(74,222,128,0.5), 0 0 100px rgba(74,222,128,0.2)' }}>DETOX</span>
+          <h1 style={{ fontSize:'clamp(2.8rem,8vw,5.5rem)', fontWeight:'900', lineHeight:'1.0', margin:'0 0 16px', textTransform:'uppercase', letterSpacing:'-1.5px', color:'#ffffff' }}>
+            EFICLAX<br/><span style={{ color:'#4ade80', textShadow:'0 0 50px rgba(74,222,128,0.5)' }}>DETOX</span>
           </h1>
-
-          {/* TEXTO MEJORADO — más contraste, más legible */}
-          <p style={{ fontSize:'clamp(1.05rem,2.8vw,1.3rem)', color:'#e2e8f0', maxWidth:'520px', margin:'0 auto 32px', lineHeight:'1.75', fontWeight:'400', textShadow:'0 1px 3px rgba(0,0,0,0.4)' }}>
+          <p style={{ fontSize:'clamp(1.05rem,2.8vw,1.3rem)', color:'#e2e8f0', maxWidth:'520px', margin:'0 auto 32px', lineHeight:'1.75', textShadow:'0 1px 3px rgba(0,0,0,0.4)' }}>
             <strong style={{ color:'#ffffff', fontWeight:'600' }}>Pensé que era grasa… pero era inflamación.</strong><br/>
             El detox natural con Moringa pura de Paraguay.
           </p>
-
           <div style={{ maxWidth:'400px', margin:'0 auto 32px', borderRadius:'20px', overflow:'hidden', border:'2px solid rgba(74,222,128,0.25)', boxShadow:'0 0 60px rgba(34,197,94,0.18), 0 20px 60px rgba(0,0,0,0.4)' }}>
             <img src="/hero2.jpg" alt="EFICLAX Detox" style={{ width:'100%', height:'auto', display:'block' }} />
           </div>
-
-          {/* BADGES PREMIUM */}
           <div style={{ display:'flex', gap:'8px', justifyContent:'center', flexWrap:'wrap', marginBottom:'36px' }}>
             {[
               { icon:'🚚', label:'Envío Gratis', sub:'Todo Paraguay' },
@@ -137,19 +139,18 @@ export default function EficlaxPage() {
               { icon:'✅', label:'100% Natural', sub:'Certificado' },
               { icon:'🔒', label:'Compra Segura', sub:'Garantía total' },
             ].map(b => (
-              <div key={b.label} style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(74,222,128,0.2)', borderRadius:'14px', padding:'10px 14px', textAlign:'center', minWidth:'88px', backdropFilter:'blur(8px)' }}>
+              <div key={b.label} style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(74,222,128,0.2)', borderRadius:'14px', padding:'10px 14px', textAlign:'center', minWidth:'88px' }}>
                 <div style={{ fontSize:'18px', marginBottom:'3px' }}>{b.icon}</div>
-                <div style={{ fontSize:'11px', fontWeight:'700', color:'#86efac', lineHeight:'1.3' }}>{b.label}</div>
+                <div style={{ fontSize:'11px', fontWeight:'700', color:'#86efac' }}>{b.label}</div>
                 <div style={{ fontSize:'10px', color:'#6b7280', marginTop:'1px' }}>{b.sub}</div>
               </div>
             ))}
           </div>
-
           <a href={quickWa} target="_blank" rel="noopener noreferrer" className="btn-main"
-            style={{ display:'inline-flex', alignItems:'center', gap:'10px', background:'linear-gradient(135deg,#22c55e,#16a34a)', color:'#fff', fontWeight:'800', fontSize:'1.1rem', padding:'17px 40px', borderRadius:'100px', textDecoration:'none', boxShadow:'0 0 40px rgba(34,197,94,0.4), 0 4px 20px rgba(0,0,0,0.3)', letterSpacing:'0.3px' }}>
+            style={{ display:'inline-flex', alignItems:'center', gap:'10px', background:'linear-gradient(135deg,#22c55e,#16a34a)', color:'#fff', fontWeight:'800', fontSize:'1.1rem', padding:'17px 40px', borderRadius:'100px', textDecoration:'none', boxShadow:'0 0 40px rgba(34,197,94,0.4)' }}>
             💬 PEDIR POR WHATSAPP AHORA
           </a>
-          <p style={{ color:'#4b5563', fontSize:'12px', marginTop:'14px', letterSpacing:'0.5px' }}>Respuesta rápida · Sin adelanto · Entrega a domicilio</p>
+          <p style={{ color:'#4b5563', fontSize:'12px', marginTop:'14px' }}>Respuesta rápida · Sin adelanto · Entrega a domicilio</p>
         </div>
       </section>
 
@@ -169,7 +170,7 @@ export default function EficlaxPage() {
             { src:'/inan.png', name:'INAN', desc:'Aprobado' },
             { src:'/compra-segura.png', name:'Compra Segura', desc:'100% garantizado' },
           ].map(c => (
-            <div key={c.name} style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:'12px', padding:'8px 14px', backdropFilter:'blur(4px)' }}>
+            <div key={c.name} style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:'12px', padding:'8px 14px' }}>
               <img src={c.src} alt={c.name} style={{ width:'40px', height:'40px', objectFit:'contain' }} />
               <div>
                 <div style={{ fontSize:'12px', fontWeight:'700', color:'#e2e8f0' }}>{c.name}</div>
@@ -182,11 +183,10 @@ export default function EficlaxPage() {
 
       {/* RESULTADOS */}
       <section style={{ padding:'56px 20px', maxWidth:'820px', margin:'0 auto', textAlign:'center' }}>
-        <div style={{ display:'inline-block', background:'rgba(74,222,128,0.08)', border:'1px solid rgba(74,222,128,0.2)', borderRadius:'100px', padding:'5px 16px', fontSize:'12px', color:'#86efac', marginBottom:'16px', letterSpacing:'1.5px', fontWeight:'700' }}>RESULTADOS COMPROBADOS</div>
         <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'28px', textTransform:'uppercase', color:'#ffffff' }}>
           💪 Resultados <span style={{ color:'#4ade80' }}>Reales</span>
         </h2>
-        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.15)', boxShadow:'0 0 40px rgba(0,0,0,0.3)' }}>
+        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.15)' }}>
           <img src="/resultados1.png" alt="Resultados EFICLAX" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
       </section>
@@ -196,7 +196,7 @@ export default function EficlaxPage() {
         <h2 style={{ fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'28px', textTransform:'uppercase', color:'#ffffff' }}>
           🔥 Oferta <span style={{ color:'#4ade80' }}>Especial</span>
         </h2>
-        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.15)', boxShadow:'0 0 40px rgba(34,197,94,0.08)' }}>
+        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.15)' }}>
           <img src="/offer.webp" alt="Oferta EFICLAX" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
       </section>
@@ -218,7 +218,7 @@ export default function EficlaxPage() {
         </h2>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:'16px' }}>
           {benefits.map(b => (
-            <div key={b.title} style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'24px 18px', textAlign:'center', backdropFilter:'blur(8px)', boxShadow:'0 4px 20px rgba(0,0,0,0.2)' }}>
+            <div key={b.title} style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'24px 18px', textAlign:'center' }}>
               <div style={{ fontSize:'2.4rem', marginBottom:'12px' }}>{b.icon}</div>
               <h3 style={{ fontSize:'0.95rem', fontWeight:'700', marginBottom:'8px', color:'#4ade80' }}>{b.title}</h3>
               <p style={{ fontSize:'12px', color:'#9ca3af', lineHeight:'1.6', margin:0 }}>{b.desc}</p>
@@ -240,43 +240,59 @@ export default function EficlaxPage() {
       {/* CINTA 3 */}
       <div style={{ background:'linear-gradient(90deg,#22c55e,#16a34a)', overflow:'hidden', padding:'11px 0' }}>
         <div className="cl">
-          {cintas.map((item,i) => <span key={i} style={{ color:'#fff', fontWeight:'800', fontSize:'12px', letterSpacing:'2.5px', padding:'0 28px', whiteSpace:'nowrap', textShadow:'0 1px 2px rgba(0,0,0,0.2)' }}>{item}</span>)}
+          {cintas.map((item,i) => <span key={i} style={{ color:'#fff', fontWeight:'800', fontSize:'12px', letterSpacing:'2.5px', padding:'0 28px', whiteSpace:'nowrap' }}>{item}</span>)}
         </div>
       </div>
 
-      {/* PACKS */}
+      {/* PACKS CON INFO DE TRATAMIENTO */}
       <section style={{ padding:'64px 20px', background:'rgba(255,255,255,0.01)' }}>
-        <div style={{ maxWidth:'820px', margin:'0 auto' }}>
-          <div style={{ display:'inline-block', background:'rgba(74,222,128,0.08)', border:'1px solid rgba(74,222,128,0.2)', borderRadius:'100px', padding:'5px 16px', fontSize:'12px', color:'#86efac', marginBottom:'14px', letterSpacing:'1.5px', fontWeight:'700', display:'flex', justifyContent:'center' }}>ELEGÍ TU PACK</div>
+        <div style={{ maxWidth:'860px', margin:'0 auto' }}>
           <h2 style={{ textAlign:'center', fontSize:'clamp(1.5rem,4vw,2.2rem)', fontWeight:'800', marginBottom:'8px', textTransform:'uppercase', color:'#ffffff' }}>
-            🛒 Elegí tu <span style={{ color:'#4ade80' }}>Pack</span>
+            🛒 Elegí tu <span style={{ color:'#4ade80' }}>Tratamiento</span>
           </h2>
-          <p style={{ textAlign:'center', color:'#6b7280', marginBottom:'40px', fontSize:'13px' }}>Seleccioná → completá el formulario → recibís en tu casa</p>
-          <div className="pack-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))', gap:'20px' }}>
+          <p style={{ textAlign:'center', color:'#6b7280', marginBottom:'40px', fontSize:'13px' }}>Cada sobre = 1 toma diaria. Resultados desde el día 1.</p>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:'20px' }}>
             {prices.map(p => (
-              <div key={p.units} className="pc" onClick={() => handleSelect(p.units, p.price)}
+              <div key={p.units} className="pc" onClick={() => handleSelect(p.units, p.price, p.sobres, p.dias)}
                 style={{
-                  background: selectedPack===p.units
-                    ? 'linear-gradient(145deg,#0f3d15,#0a2a0a)'
-                    : p.tag ? 'linear-gradient(145deg,#0c3512,#071507)'
-                    : 'rgba(255,255,255,0.025)',
-                  border: selectedPack===p.units
-                    ? '2px solid #4ade80'
-                    : p.tag ? '2px solid rgba(74,222,128,0.45)'
-                    : '1px solid rgba(255,255,255,0.07)',
+                  background: selectedPack===p.units ? 'linear-gradient(145deg,#0f3d15,#0a2a0a)' : p.tag ? 'linear-gradient(145deg,#0c3512,#071507)' : 'rgba(255,255,255,0.025)',
+                  border: selectedPack===p.units ? '2px solid #4ade80' : p.tag ? '2px solid rgba(74,222,128,0.45)' : '1px solid rgba(255,255,255,0.07)',
                   borderRadius:'20px', padding:'28px 22px', textAlign:'center', position:'relative',
                   boxShadow: selectedPack===p.units ? '0 0 30px rgba(74,222,128,0.2)' : '0 4px 20px rgba(0,0,0,0.2)'
                 }}>
-                {p.tag && <div style={{ position:'absolute', top:'-13px', left:'50%', transform:'translateX(-50%)', background:'linear-gradient(90deg,#22c55e,#16a34a)', color:'#fff', fontWeight:'800', fontSize:'10px', padding:'4px 16px', borderRadius:'100px', whiteSpace:'nowrap', letterSpacing:'1.5px', boxShadow:'0 2px 10px rgba(34,197,94,0.4)' }}>{p.tag}</div>}
+                {p.tag && <div style={{ position:'absolute', top:'-13px', left:'50%', transform:'translateX(-50%)', background:'linear-gradient(90deg,#22c55e,#16a34a)', color:'#fff', fontWeight:'800', fontSize:'10px', padding:'4px 16px', borderRadius:'100px', whiteSpace:'nowrap', letterSpacing:'1.5px' }}>{p.tag}</div>}
                 {selectedPack===p.units && <div style={{ position:'absolute', top:'12px', right:'12px', background:'#4ade80', color:'#000', borderRadius:'100%', width:'24px', height:'24px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', fontWeight:'900' }}>✓</div>}
-                <div style={{ fontSize:'2.2rem', fontWeight:'900', marginBottom:'4px', color:'#ffffff' }}>x{p.units}</div>
-                <div style={{ color:'#6b7280', fontSize:'12px', marginBottom:'14px' }}>{p.units===1?'unidad':'unidades'}</div>
+
+                {/* Número de tratamiento */}
+                <div style={{ fontSize:'11px', color:'#6b7280', letterSpacing:'1.5px', fontWeight:'600', textTransform:'uppercase', marginBottom:'6px' }}>TRATAMIENTO x{p.units}</div>
+                <div style={{ fontSize:'2rem', fontWeight:'900', marginBottom:'4px', color:'#ffffff' }}>x{p.units}</div>
+
+                {/* Info del tratamiento */}
+                <div style={{ background:'rgba(74,222,128,0.06)', border:'1px solid rgba(74,222,128,0.12)', borderRadius:'10px', padding:'10px 12px', margin:'10px 0 14px', display:'flex', flexDirection:'column', gap:'4px' }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <span style={{ fontSize:'11px', color:'#6b7280' }}>📦 Sobres:</span>
+                    <span style={{ fontSize:'12px', fontWeight:'700', color:'#86efac' }}>{p.sobres}</span>
+                  </div>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <span style={{ fontSize:'11px', color:'#6b7280' }}>💊 Tomas:</span>
+                    <span style={{ fontSize:'12px', fontWeight:'700', color:'#86efac' }}>{p.tomas}</span>
+                  </div>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <span style={{ fontSize:'11px', color:'#6b7280' }}>📅 Duración:</span>
+                    <span style={{ fontSize:'12px', fontWeight:'700', color:'#86efac' }}>{p.dias}</span>
+                  </div>
+                  <div style={{ borderTop:'1px solid rgba(74,222,128,0.1)', paddingTop:'6px', marginTop:'2px' }}>
+                    <span style={{ fontSize:'11px', color:'#4ade80', fontWeight:'700' }}>✨ {p.ideal}</span>
+                  </div>
+                </div>
+
                 <div style={{ fontSize:'1.7rem', fontWeight:'800', color:'#4ade80', marginBottom:'6px', textShadow:'0 0 20px rgba(74,222,128,0.3)' }}>{p.price}</div>
-                {p.savings && <div style={{ fontSize:'11px', color:'#86efac', marginBottom:'18px', fontWeight:'600', background:'rgba(74,222,128,0.08)', borderRadius:'100px', padding:'3px 10px', display:'inline-block' }}>💰 {p.savings}</div>}
-                {!p.savings && <div style={{ marginBottom:'18px' }} />}
-                <button onClick={e => { e.stopPropagation(); handleSelect(p.units,p.price); }}
+                {p.savings && <div style={{ fontSize:'11px', color:'#86efac', marginBottom:'14px', fontWeight:'600', background:'rgba(74,222,128,0.08)', borderRadius:'100px', padding:'3px 10px', display:'inline-block' }}>💰 {p.savings}</div>}
+                {!p.savings && <div style={{ marginBottom:'14px' }} />}
+
+                <button onClick={e => { e.stopPropagation(); handleSelect(p.units, p.price, p.sobres, p.dias); }}
                   style={{ display:'block', width:'100%', background: selectedPack===p.units ? 'linear-gradient(135deg,#22c55e,#16a34a)' : p.tag ? 'rgba(34,197,94,0.18)' : 'rgba(255,255,255,0.05)', color:'#fff', fontWeight:'700', padding:'12px', borderRadius:'100px', border: p.tag ? '1px solid rgba(74,222,128,0.35)' : '1px solid rgba(255,255,255,0.08)', fontSize:'13px', cursor:'pointer', transition:'all 0.2s' }}>
-                  {selectedPack===p.units ? '✓ Pack Seleccionado' : 'Seleccionar Pack'}
+                  {selectedPack===p.units ? '✓ Tratamiento Seleccionado' : 'Seleccionar Tratamiento'}
                 </button>
               </div>
             ))}
@@ -286,12 +302,11 @@ export default function EficlaxPage() {
 
       {/* FORMULARIO */}
       <section id="formulario" style={{ padding:'64px 20px', maxWidth:'560px', margin:'0 auto' }}>
-        <div style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(34,197,94,0.18)', borderRadius:'22px', padding:'36px 28px', boxShadow:'0 0 40px rgba(0,0,0,0.3)', backdropFilter:'blur(12px)' }}>
+        <div style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(34,197,94,0.18)', borderRadius:'22px', padding:'36px 28px', boxShadow:'0 0 40px rgba(0,0,0,0.3)' }}>
           <h2 style={{ textAlign:'center', fontSize:'clamp(1.2rem,3vw,1.7rem)', fontWeight:'800', marginBottom:'6px', textTransform:'uppercase', color:'#ffffff' }}>
             📋 Formulario de <span style={{ color:'#4ade80' }}>Pedido</span>
           </h2>
           <p style={{ textAlign:'center', color:'#6b7280', fontSize:'13px', marginBottom:'28px' }}>Completá tus datos y te contactamos por WhatsApp</p>
-
           {submitted ? (
             <div style={{ textAlign:'center', padding:'36px 20px' }}>
               <div style={{ fontSize:'3.5rem', marginBottom:'14px' }}>🎉</div>
@@ -302,8 +317,8 @@ export default function EficlaxPage() {
             <>
               {selectedPack && (
                 <div style={{ background:'rgba(34,197,94,0.07)', border:'1px solid rgba(34,197,94,0.18)', borderRadius:'12px', padding:'12px 18px', marginBottom:'22px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                  <span style={{ color:'#9ca3af', fontSize:'12px' }}>Pack seleccionado:</span>
-                  <span style={{ color:'#4ade80', fontWeight:'700', fontSize:'13px' }}>{form.pack}</span>
+                  <span style={{ color:'#9ca3af', fontSize:'12px' }}>Tratamiento seleccionado:</span>
+                  <span style={{ color:'#4ade80', fontWeight:'700', fontSize:'13px' }}>x{selectedPack}</span>
                 </div>
               )}
               {[
@@ -313,16 +328,16 @@ export default function EficlaxPage() {
                 { key:'direccion', label:'Dirección de entrega', placeholder:'Calle, número, barrio...', type:'text' },
               ].map(field => (
                 <div key={field.key} style={{ marginBottom:'16px' }}>
-                  <label style={{ display:'block', fontSize:'12px', fontWeight:'600', color:'#d1d5db', marginBottom:'7px', letterSpacing:'0.3px' }}>{field.label}</label>
+                  <label style={{ display:'block', fontSize:'12px', fontWeight:'600', color:'#d1d5db', marginBottom:'7px' }}>{field.label}</label>
                   <input type={field.type} placeholder={field.placeholder}
                     value={form[field.key as keyof typeof form]}
                     onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
                     style={{ width:'100%', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'10px', padding:'13px 15px', color:'#ffffff', fontSize:'14px', boxSizing:'border-box' }} />
                 </div>
               ))}
-              {!selectedPack && <p style={{ color:'#f59e0b', fontSize:'12px', textAlign:'center', marginBottom:'14px', background:'rgba(245,158,11,0.08)', borderRadius:'8px', padding:'8px' }}>⚠️ Primero seleccioná un pack arriba</p>}
+              {!selectedPack && <p style={{ color:'#f59e0b', fontSize:'12px', textAlign:'center', marginBottom:'14px', background:'rgba(245,158,11,0.08)', borderRadius:'8px', padding:'8px' }}>⚠️ Primero seleccioná un tratamiento arriba</p>}
               <button onClick={handleSubmit} disabled={!selectedPack}
-                style={{ width:'100%', background: selectedPack ? 'linear-gradient(135deg,#25D366,#1da851)' : 'rgba(255,255,255,0.04)', color:'#fff', fontWeight:'800', fontSize:'1rem', padding:'15px', borderRadius:'100px', border:'none', cursor: selectedPack ? 'pointer' : 'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', opacity: selectedPack ? 1 : 0.45, boxShadow: selectedPack ? '0 0 30px rgba(37,211,102,0.3)' : 'none', transition:'all 0.2s' }}>
+                style={{ width:'100%', background: selectedPack ? 'linear-gradient(135deg,#25D366,#1da851)' : 'rgba(255,255,255,0.04)', color:'#fff', fontWeight:'800', fontSize:'1rem', padding:'15px', borderRadius:'100px', border:'none', cursor: selectedPack ? 'pointer' : 'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', opacity: selectedPack ? 1 : 0.45, transition:'all 0.2s' }}>
                 💬 CONFIRMAR PEDIDO POR WHATSAPP
               </button>
               <div style={{ display:'flex', gap:'12px', justifyContent:'center', marginTop:'16px', flexWrap:'wrap' }}>
@@ -340,7 +355,7 @@ export default function EficlaxPage() {
         <h2 style={{ fontSize:'clamp(1.3rem,3vw,1.8rem)', fontWeight:'800', marginBottom:'24px', textTransform:'uppercase', color:'#ffffff' }}>
           🚚 Entrega en <span style={{ color:'#4ade80' }}>Todo Paraguay</span>
         </h2>
-        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.12)', boxShadow:'0 4px 30px rgba(0,0,0,0.2)' }}>
+        <div style={{ borderRadius:'20px', overflow:'hidden', border:'1px solid rgba(74,222,128,0.12)' }}>
           <img src="/logistics.webp" alt="Entrega Paraguay" style={{ width:'100%', height:'auto', display:'block' }} />
         </div>
       </section>
@@ -353,11 +368,11 @@ export default function EficlaxPage() {
           </h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(230px,1fr))', gap:'16px' }}>
             {testimonials.map(t => (
-              <div key={t.name} style={{ background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'24px 20px', boxShadow:'0 4px 20px rgba(0,0,0,0.15)', backdropFilter:'blur(8px)' }}>
-                <div style={{ color:'#fbbf24', fontSize:'18px', marginBottom:'12px', letterSpacing:'2px' }}>{'★'.repeat(t.stars)}</div>
+              <div key={t.name} style={{ background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:'16px', padding:'24px 20px' }}>
+                <div style={{ color:'#fbbf24', fontSize:'18px', marginBottom:'12px' }}>{'★'.repeat(t.stars)}</div>
                 <p style={{ fontSize:'13px', color:'#d1d5db', lineHeight:'1.7', margin:'0 0 16px', fontStyle:'italic' }}>&ldquo;{t.text}&rdquo;</p>
                 <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-                  <div style={{ width:'34px', height:'34px', background:'linear-gradient(135deg,rgba(74,222,128,0.2),rgba(34,197,94,0.1))', borderRadius:'100%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'15px', border:'1px solid rgba(74,222,128,0.2)' }}>👤</div>
+                  <div style={{ width:'34px', height:'34px', background:'rgba(74,222,128,0.15)', borderRadius:'100%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'15px' }}>👤</div>
                   <div>
                     <div style={{ fontSize:'12px', fontWeight:'700', color:'#f3f4f6' }}>{t.name}</div>
                     <div style={{ fontSize:'10px', color:'#6b7280' }}>{t.city}</div>
@@ -383,14 +398,14 @@ export default function EficlaxPage() {
           <h2 style={{ fontSize:'clamp(1.8rem,5vw,3rem)', fontWeight:'900', marginBottom:'14px', textTransform:'uppercase', color:'#ffffff' }}>
             Listo para el <span style={{ color:'#4ade80', textShadow:'0 0 30px rgba(74,222,128,0.4)' }}>cambio?</span>
           </h2>
-          <p style={{ color:'#9ca3af', maxWidth:'440px', margin:'0 auto 32px', lineHeight:'1.7', fontSize:'1rem' }}>
-            Escribinos por WhatsApp, elegís tu pack y lo recibís en la puerta de tu casa. Sin adelanto.
+          <p style={{ color:'#9ca3af', maxWidth:'440px', margin:'0 auto 32px', lineHeight:'1.7' }}>
+            Escribinos por WhatsApp, elegís tu tratamiento y lo recibís en la puerta de tu casa. Sin adelanto.
           </p>
           <a href={quickWa} target="_blank" rel="noopener noreferrer" className="btn-main"
-            style={{ display:'inline-flex', alignItems:'center', gap:'12px', background:'linear-gradient(135deg,#25D366,#1da851)', color:'#fff', fontWeight:'800', fontSize:'1.15rem', padding:'19px 48px', borderRadius:'100px', textDecoration:'none', boxShadow:'0 0 60px rgba(37,211,102,0.45), 0 4px 20px rgba(0,0,0,0.3)' }}>
+            style={{ display:'inline-flex', alignItems:'center', gap:'12px', background:'linear-gradient(135deg,#25D366,#1da851)', color:'#fff', fontWeight:'800', fontSize:'1.15rem', padding:'19px 48px', borderRadius:'100px', textDecoration:'none', boxShadow:'0 0 60px rgba(37,211,102,0.45)' }}>
             💬 WHATSAPP: +595 994 537 438
           </a>
-          <p style={{ color:'#1f2937', fontSize:'11px', marginTop:'48px', letterSpacing:'0.5px' }}>© 2025 Bioliffe Moringa Paraguay — Todos los derechos reservados</p>
+          <p style={{ color:'#1f2937', fontSize:'11px', marginTop:'48px' }}>© 2025 Bioliffe Moringa Paraguay — Todos los derechos reservados</p>
         </div>
       </section>
     </main>
