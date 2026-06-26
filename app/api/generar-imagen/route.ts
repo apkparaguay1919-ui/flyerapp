@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     };
     const prompt = secciones[seccion || "hero"];
     const result = await fal.subscribe("fal-ai/flux/schnell", {
-      input: { prompt, image_size: "portrait_9_16", num_inference_steps: 4, num_images: 1, enable_safety_checker: true },
+      input: { prompt, image_size: "portrait_16_9", num_inference_steps: 4, num_images: 1, enable_safety_checker: true },
     });
     const imageUrl = (result.data as any)?.images?.[0]?.url;
     if (!imageUrl) return NextResponse.json({ error: "No se genero imagen" }, { status: 500 });
