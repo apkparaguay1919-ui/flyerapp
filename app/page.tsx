@@ -21,21 +21,15 @@ function PhoneMockup({ img, name, price, before }: { img: string; name: string; 
         <div className="absolute inset-1 rounded-[2rem] overflow-hidden">
           <img src={img} alt={name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"/>
-          <div className="absolute top-6 right-3 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full">
-            OFERTA
-          </div>
-          <div className="absolute top-6 left-3 bg-black/60 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded-full border border-white/20">
-            ✨ IA
-          </div>
+          <div className="absolute top-6 right-3 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full">OFERTA</div>
+          <div className="absolute top-6 left-3 bg-black/60 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded-full border border-white/20">✨ IA</div>
           <div className="absolute bottom-0 left-0 right-0 p-3">
             <p className="text-white font-bold text-xs mb-0.5">{name}</p>
             <div className="flex items-center gap-1.5 mb-2">
               <p className="text-gray-400 text-[10px] line-through">{before}</p>
               <p className="text-white font-black text-base">{price}</p>
             </div>
-            <div className="w-full bg-white/20 backdrop-blur-sm rounded-full py-1 text-[10px] text-white text-center border border-white/20">
-              Ver oferta →
-            </div>
+            <div className="w-full bg-white/20 backdrop-blur-sm rounded-full py-1 text-[10px] text-white text-center border border-white/20">Ver oferta →</div>
           </div>
         </div>
       </div>
@@ -57,40 +51,69 @@ const PAISES = [
 
 const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 transition-all text-sm";
 
+const MODULES = [
+  { icon: "🎨", title: "Flyers", desc: "Diseños 9:16 que venden", href: "/crear", grad: "135deg,#7c3aed,#ec4899", glow: "rgba(124,58,237,0.3)", tag: "⚡ Popular" },
+  { icon: "🎬", title: "Videos", desc: "Reels y TikToks con IA", href: "/videos", grad: "135deg,#1d4ed8,#7c3aed", glow: "rgba(29,78,216,0.3)", tag: "🔥 Nuevo" },
+  { icon: "✍️", title: "Copys", desc: "Textos que convierten", href: "/copy", grad: "135deg,#059669,#1d4ed8", glow: "rgba(5,150,105,0.3)", tag: "" },
+  { icon: "📦", title: "Productos", desc: "Biblioteca Bioliffe", href: "/productos", grad: "135deg,#d97706,#dc2626", glow: "rgba(217,119,6,0.3)", tag: "" },
+  { icon: "💡", title: "Prompts", desc: "Los mejores prompts IA", href: "/prompts", grad: "135deg,#b45309,#d97706", glow: "rgba(180,83,9,0.3)", tag: "" },
+  { icon: "🖊️", title: "Editor", desc: "Edición visual en vivo", href: "/editor", grad: "135deg,#be185d,#7c3aed", glow: "rgba(190,24,93,0.3)", tag: "" },
+  { icon: "📊", title: "Dashboard", desc: "Control de proyectos", href: "/dashboard", grad: "135deg,#0f766e,#1d4ed8", glow: "rgba(15,118,110,0.3)", tag: "" },
+  { icon: "🎭", title: "Plantillas", desc: "Galería profesional", href: "/plantillas", grad: "135deg,#4f46e5,#7c3aed", glow: "rgba(79,70,229,0.3)", tag: "" },
+];
+
 export default function Home() {
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <main className="min-h-screen bg-[#070711] text-white overflow-x-hidden">
+    <main className="min-h-screen text-white overflow-x-hidden" style={{background: "#070711"}}>
 
       {/* FONDO */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"/>
-        <div className="absolute top-32 right-1/4 w-80 h-80 bg-pink-600/8 rounded-full blur-3xl"/>
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl"/>
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full" style={{background: "radial-gradient(circle,rgba(124,58,237,0.12),transparent)", filter: "blur(60px)"}}/>
+        <div className="absolute top-32 right-1/4 w-80 h-80 rounded-full" style={{background: "radial-gradient(circle,rgba(236,72,153,0.08),transparent)", filter: "blur(60px)"}}/>
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 rounded-full" style={{background: "radial-gradient(circle,rgba(37,99,235,0.08),transparent)", filter: "blur(60px)"}}/>
       </div>
 
-      {/* NAVBAR */}
-      <nav className="relative z-50 flex items-center justify-between px-6 py-4 border-b border-white/5 backdrop-blur-sm">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-sm font-black">J</div>
-          <span className="font-bold text-lg tracking-tight">JKings AI Studio</span>
+      {/* NAVBAR PREMIUM */}
+      <nav style={{position: "relative", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 32px", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(7,7,17,0.85)", backdropFilter: "blur(24px)"}}>
+        <div style={{display: "flex", alignItems: "center", gap: 10}}>
+          <div style={{width: 38, height: 38, borderRadius: 10, background: "linear-gradient(135deg,#7c3aed,#ec4899)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 18, boxShadow: "0 0 24px rgba(124,58,237,0.6)"}}>J</div>
+          <div style={{lineHeight: 1.1}}>
+            <div style={{fontWeight: 900, fontSize: 15, color: "white", letterSpacing: "-0.5px"}}>JKings <span style={{background: "linear-gradient(90deg,#a78bfa,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"}}>AI Studio</span></div>
+            <div style={{fontSize: 9, color: "#6b7280", letterSpacing: 1, textTransform: "uppercase"}}>Powered by IA</div>
+          </div>
         </div>
-        <div className="hidden md:flex items-center gap-5 text-sm text-gray-400">
-          <a href="#" className="hover:text-white transition-colors">Funciones</a>
-          <a href="/studio" className="hover:text-purple-400 transition-colors">🎬 Studio</a>
-          <a href="/videos" className="hover:text-purple-400 transition-colors">📱 Videos</a>
-          <a href="/copy" className="hover:text-purple-400 transition-colors">✍️ Copys</a>
-          <a href="/productos" className="hover:text-purple-400 transition-colors">📦 Productos</a>
-          <a href="/prompts" className="hover:text-purple-400 transition-colors">💡 Prompts</a>
-          <a href="/dashboard" className="hover:text-purple-400 transition-colors">📊 Dashboard</a>
+
+        <div style={{display: "flex", alignItems: "center", gap: 2}}>
+          {[
+            { label: "Studio", href: "/studio", icon: "🎬", color: "#a78bfa" },
+            { label: "Videos", href: "/videos", icon: "📱", color: "#60a5fa" },
+            { label: "Copys", href: "/copy", icon: "✍️", color: "#34d399" },
+            { label: "Productos", href: "/productos", icon: "📦", color: "#fb923c" },
+            { label: "Prompts", href: "/prompts", icon: "💡", color: "#fbbf24" },
+            { label: "Dashboard", href: "/dashboard", icon: "📊", color: "#f472b6" },
+          ].map((item) => (
+            <a key={item.href} href={item.href}
+              style={{
+                padding: "7px 13px", borderRadius: 8, color: hovered === item.href ? item.color : "#9ca3af",
+                display: "flex", alignItems: "center", gap: 5, transition: "all 0.15s", fontSize: 13, fontWeight: 500,
+                background: hovered === item.href ? "rgba(255,255,255,0.07)" : "transparent",
+                textDecoration: "none",
+              }}
+              onMouseEnter={() => setHovered(item.href)}
+              onMouseLeave={() => setHovered(null)}>
+              <span style={{fontSize: 13}}>{item.icon}</span>{item.label}
+            </a>
+          ))}
         </div>
-        <div className="flex items-center gap-3">
-          <button className="text-sm text-gray-400 hover:text-white transition-colors">Iniciar sesión</button>
-          <button
-            onClick={() => router.push("/crear")}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-purple-500/20">
+
+        <div style={{display: "flex", alignItems: "center", gap: 10}}>
+          <button style={{fontSize: 13, color: "#9ca3af", background: "none", border: "none", cursor: "pointer"}}>Iniciar sesión</button>
+          <button onClick={() => router.push("/crear")}
+            style={{background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", padding: "9px 22px", borderRadius: 50, fontSize: 13, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 24px rgba(124,58,237,0.45)", transition: "all 0.2s", letterSpacing: "-0.2px"}}>
             Empezar gratis →
           </button>
         </div>
@@ -98,70 +121,77 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative text-center px-6 pt-20 pb-10">
-        <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs px-4 py-2 rounded-full mb-8 font-medium">
-          <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"/>
+        <div style={{display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.2)", color: "#a78bfa", fontSize: 12, padding: "6px 16px", borderRadius: 50, marginBottom: 32, fontWeight: 500}}>
+          <span style={{width: 6, height: 6, background: "#a78bfa", borderRadius: "50%", animation: "pulse 2s infinite"}}/>
           Generador de Flyers + Videos + Copys con IA
         </div>
-        <h1 className="text-6xl font-black max-w-4xl mx-auto leading-[1.05] mb-6 tracking-tight">
+        <h1 style={{fontSize: 64, fontWeight: 900, maxWidth: 800, margin: "0 auto 24px", lineHeight: 1.05, letterSpacing: "-2px"}}>
           Crea flyers que
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400"> convierten </span>
+          <span style={{background: "linear-gradient(90deg,#a78bfa,#ec4899,#fb923c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"}}> convierten </span>
           <br/>en segundos
         </h1>
-        <p className="text-gray-400 text-lg max-w-lg mx-auto mb-8 leading-relaxed">
+        <p style={{color: "#9ca3af", fontSize: 17, maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.7}}>
           Sube tu producto, escribe los datos y la IA genera el flyer 9:16, landing page optimizada y copy para Meta Ads listo para publicar.
         </p>
-        <div className="flex items-center justify-center gap-4 mb-12 flex-wrap">
-          <button
-            onClick={() => router.push("/crear")}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-xl shadow-purple-500/30">
+        <div style={{display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 48, flexWrap: "wrap"}}>
+          <button onClick={() => router.push("/crear")}
+            style={{background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", padding: "16px 36px", borderRadius: 50, fontSize: 17, fontWeight: 800, cursor: "pointer", boxShadow: "0 8px 32px rgba(124,58,237,0.4)", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 8}}>
             ✨ Crear mi flyer ahora →
           </button>
-          <button
-            onClick={() => router.push("/videos")}
-            className="inline-flex items-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 active:scale-95 text-white px-8 py-4 rounded-full text-lg font-bold transition-all">
+          <button onClick={() => router.push("/videos")}
+            style={{background: "rgba(255,255,255,0.05)", color: "white", border: "1px solid rgba(255,255,255,0.12)", padding: "16px 36px", borderRadius: 50, fontSize: 17, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 8}}>
             🎬 Generar video →
           </button>
         </div>
 
-        {/* STATS */}
-        <div className="flex justify-center gap-12 mb-4">
+        <div style={{display: "flex", justifyContent: "center", gap: 48}}>
           {[
             { num: "12,400+", label: "Flyers generados" },
             { num: "60+", label: "Países" },
             { num: "30s", label: "Tiempo promedio" },
             { num: "98%", label: "Satisfacción" },
           ].map(({ num, label }) => (
-            <div key={label} className="text-center">
-              <p className="text-2xl font-black text-white">{num}</p>
-              <p className="text-gray-500 text-xs mt-0.5">{label}</p>
+            <div key={label} style={{textAlign: "center"}}>
+              <p style={{fontSize: 26, fontWeight: 900, color: "white", margin: 0}}>{num}</p>
+              <p style={{color: "#6b7280", fontSize: 12, margin: "2px 0 0"}}>{label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* MODULOS STUDIO */}
-      <section className="px-6 pb-16">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-black text-center mb-8">
-            Todo lo que necesitás para vender más con
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"> IA</span>
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: "🎨", title: "Flyers", desc: "9:16 profesionales", href: "/crear", color: "from-purple-500/20 to-pink-500/20" },
-              { icon: "🎬", title: "Videos", desc: "Reels y TikToks", href: "/videos", color: "from-blue-500/20 to-purple-500/20" },
-              { icon: "✍️", title: "Copys", desc: "Facebook y WhatsApp", href: "/copy", color: "from-green-500/20 to-blue-500/20" },
-              { icon: "📦", title: "Productos", desc: "Biblioteca Bioliffe", href: "/productos", color: "from-orange-500/20 to-red-500/20" },
-              { icon: "💡", title: "Prompts", desc: "Banco de prompts IA", href: "/prompts", color: "from-yellow-500/20 to-orange-500/20" },
-              { icon: "🖊️", title: "Editor", desc: "Visual en tiempo real", href: "/editor", color: "from-pink-500/20 to-red-500/20" },
-              { icon: "📊", title: "Dashboard", desc: "Mis proyectos", href: "/dashboard", color: "from-teal-500/20 to-green-500/20" },
-              { icon: "🎭", title: "Plantillas", desc: "Galería profesional", href: "/plantillas", color: "from-indigo-500/20 to-purple-500/20" },
-            ].map((mod) => (
-              <a key={mod.title} href={mod.href}
-                className={`bg-gradient-to-br ${mod.color} border border-white/10 rounded-2xl p-4 hover:scale-105 transition-all cursor-pointer text-center`}>
-                <div className="text-3xl mb-2">{mod.icon}</div>
-                <div className="font-bold text-sm">{mod.title}</div>
-                <div className="text-gray-400 text-xs mt-1">{mod.desc}</div>
+      {/* MÓDULOS PREMIUM */}
+      <section style={{padding: "20px 32px 60px"}}>
+        <div style={{maxWidth: 1100, margin: "0 auto"}}>
+          <div style={{textAlign: "center", marginBottom: 40}}>
+            <p style={{color: "#6b7280", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600}}>PLATAFORMA COMPLETA</p>
+            <h2 style={{fontSize: 36, fontWeight: 900, margin: 0, letterSpacing: "-1px"}}>
+              Todo para vender más con{" "}
+              <span style={{background: "linear-gradient(90deg,#a78bfa,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"}}>IA</span>
+            </h2>
+          </div>
+          <div style={{display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16}}>
+            {MODULES.map((mod) => (
+              <a key={mod.title} href={mod.href} style={{textDecoration: "none", position: "relative", overflow: "hidden", borderRadius: 20, padding: "24px 20px", border: hovered === mod.title ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(255,255,255,0.07)", background: hovered === mod.title ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)", transition: "all 0.25s", cursor: "pointer", display: "block", boxShadow: hovered === mod.title ? `0 8px 32px ${mod.glow}` : "none", transform: hovered === mod.title ? "translateY(-4px)" : "none"}}
+                onMouseEnter={() => setHovered(mod.title)}
+                onMouseLeave={() => setHovered(null)}>
+                {/* Glow fondo */}
+                <div style={{position: "absolute", top: 0, right: 0, width: 100, height: 100, borderRadius: "50%", background: `radial-gradient(circle,${mod.glow},transparent)`, filter: "blur(20px)", opacity: hovered === mod.title ? 1 : 0, transition: "opacity 0.3s"}}/>
+                {/* Tag */}
+                {mod.tag && (
+                  <div style={{position: "absolute", top: 12, right: 12, background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", fontSize: 9, fontWeight: 700, padding: "3px 8px", borderRadius: 20}}>
+                    {mod.tag}
+                  </div>
+                )}
+                {/* Icono */}
+                <div style={{width: 52, height: 52, borderRadius: 14, background: `linear-gradient(${mod.grad})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, marginBottom: 14, boxShadow: `0 4px 16px ${mod.glow}`}}>
+                  {mod.icon}
+                </div>
+                <div style={{fontWeight: 800, fontSize: 16, color: "white", marginBottom: 4}}>{mod.title}</div>
+                <div style={{color: "#6b7280", fontSize: 12, lineHeight: 1.5}}>{mod.desc}</div>
+                {/* Arrow */}
+                <div style={{marginTop: 16, color: hovered === mod.title ? "#a78bfa" : "#374151", fontSize: 12, fontWeight: 600, transition: "color 0.2s"}}>
+                  Abrir →
+                </div>
               </a>
             ))}
           </div>
@@ -170,8 +200,8 @@ export default function Home() {
 
       {/* CINTA DE CELULARES */}
       <div className="relative w-full overflow-hidden py-8 mb-20">
-        <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#070711] to-transparent z-10 pointer-events-none"/>
-        <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#070711] to-transparent z-10 pointer-events-none"/>
+        <div className="absolute left-0 top-0 bottom-0 w-40 z-10 pointer-events-none" style={{background: "linear-gradient(to right,#070711,transparent)"}}/>
+        <div className="absolute right-0 top-0 bottom-0 w-40 z-10 pointer-events-none" style={{background: "linear-gradient(to left,#070711,transparent)"}}/>
         <div className="flex items-end gap-6 animate-marquee w-max px-8">
           {[...flyerExamples, ...flyerExamples, ...flyerExamples].map((f, i) => (
             <div key={i} style={{ transform: i % 2 === 0 ? "rotate(-4deg)" : "rotate(4deg)", marginBottom: i % 2 === 0 ? "0px" : "20px" }}>
@@ -184,11 +214,11 @@ export default function Home() {
       {/* FORMULARIO */}
       <section className="relative px-6 pb-24">
         <div className="max-w-md mx-auto">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none"/>
-          <div className="relative bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none" style={{background: "radial-gradient(circle,rgba(124,58,237,0.1),transparent)", filter: "blur(60px)"}}/>
+          <div className="relative rounded-3xl p-8" style={{background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", boxShadow: "0 32px 64px rgba(0,0,0,0.5)"}}>
             <div className="text-center mb-8">
               <h2 className="text-xl font-bold mb-1">Genera tu flyer ahora</h2>
-              <p className="text-gray-500 text-sm">Gratis — sin tarjeta de crédito</p>
+              <p style={{color: "#6b7280", fontSize: 13}}>Gratis — sin tarjeta de crédito</p>
             </div>
             <div className="flex items-center justify-center gap-0 mb-8">
               {["Producto", "Precio", "Foto"].map((label, i) => {
@@ -198,12 +228,12 @@ export default function Home() {
                 return (
                   <div key={n} className="flex items-center">
                     <div className="flex flex-col items-center">
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${active ? "bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30" : "bg-white/5 text-gray-600 border border-white/10"} ${current ? "scale-110" : ""}`}>
+                      <div style={{width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, transition: "all 0.3s", background: active ? "linear-gradient(135deg,#7c3aed,#ec4899)" : "rgba(255,255,255,0.05)", color: active ? "white" : "#4b5563", border: active ? "none" : "1px solid rgba(255,255,255,0.1)", transform: current ? "scale(1.1)" : "scale(1)", boxShadow: active ? "0 4px 16px rgba(124,58,237,0.4)" : "none"}}>
                         {step > n ? "✓" : n}
                       </div>
-                      <span className={`text-[10px] mt-1 transition-colors ${active ? "text-purple-400" : "text-gray-600"}`}>{label}</span>
+                      <span style={{fontSize: 10, marginTop: 4, color: active ? "#a78bfa" : "#4b5563"}}>{label}</span>
                     </div>
-                    {n < 3 && <div className={`w-16 h-px mb-4 mx-1 transition-all duration-500 ${step > n ? "bg-gradient-to-r from-purple-600 to-pink-600" : "bg-white/10"}`}/>}
+                    {n < 3 && <div style={{width: 64, height: 1, margin: "0 4px 16px", background: step > n ? "linear-gradient(90deg,#7c3aed,#ec4899)" : "rgba(255,255,255,0.08)"}}/>}
                   </div>
                 );
               })}
@@ -226,7 +256,7 @@ export default function Home() {
                     <option value="whatsapp">💬 Mensajes por WhatsApp</option>
                   </select>
                 </div>
-                <button onClick={() => setStep(2)} className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-bold py-4 rounded-xl text-sm mt-2 shadow-lg shadow-purple-500/20 transition-all">
+                <button onClick={() => setStep(2)} style={{width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", padding: "14px", borderRadius: 12, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.3)", marginTop: 8}}>
                   Continuar →
                 </button>
               </div>
@@ -258,8 +288,8 @@ export default function Home() {
                   <input className={inputClass} placeholder="Ej: 5215512345678"/>
                 </div>
                 <div className="grid grid-cols-2 gap-3 mt-1">
-                  <button onClick={() => setStep(1)} className="bg-white/5 hover:bg-white/10 active:scale-95 text-white font-semibold py-3.5 rounded-xl text-sm transition-all border border-white/10">← Atrás</button>
-                  <button onClick={() => setStep(3)} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg shadow-purple-500/20 transition-all">Continuar →</button>
+                  <button onClick={() => setStep(1)} style={{background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "14px", borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>← Atrás</button>
+                  <button onClick={() => setStep(3)} style={{background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", padding: "14px", borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.3)"}}>Continuar →</button>
                 </div>
               </div>
             )}
@@ -267,15 +297,15 @@ export default function Home() {
               <div className="flex flex-col gap-4">
                 <div>
                   <label className="text-xs text-gray-400 mb-1.5 block font-medium uppercase tracking-wide">Foto del producto</label>
-                  <label className="flex flex-col items-center justify-center w-full h-36 bg-white/3 border-2 border-dashed border-white/15 rounded-2xl cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all group">
-                    <span className="text-3xl mb-2 group-hover:scale-110 transition-transform">📸</span>
-                    <span className="text-gray-400 text-sm font-medium">Haz clic para subir</span>
-                    <span className="text-gray-600 text-xs mt-0.5">PNG, JPG hasta 10MB</span>
+                  <label style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: 140, background: "rgba(255,255,255,0.02)", border: "2px dashed rgba(255,255,255,0.1)", borderRadius: 16, cursor: "pointer", transition: "all 0.2s"}}>
+                    <span style={{fontSize: 32, marginBottom: 8}}>📸</span>
+                    <span style={{color: "#9ca3af", fontSize: 13, fontWeight: 500}}>Haz clic para subir</span>
+                    <span style={{color: "#4b5563", fontSize: 11, marginTop: 2}}>PNG, JPG hasta 10MB</span>
                     <input type="file" accept="image/*" className="hidden"/>
                   </label>
                 </div>
-                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-2xl p-4">
-                  <p className="text-sm font-semibold mb-3 text-purple-300">✨ La IA generará automáticamente:</p>
+                <div style={{background: "linear-gradient(135deg,rgba(124,58,237,0.1),rgba(236,72,153,0.1))", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 16, padding: 16}}>
+                  <p style={{fontSize: 13, fontWeight: 600, marginBottom: 10, color: "#a78bfa"}}>✨ La IA generará automáticamente:</p>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       { icon: "📱", text: "Flyer 9:16 HD" },
@@ -283,32 +313,29 @@ export default function Home() {
                       { icon: "📝", text: "Copy Meta Ads" },
                       { icon: "💬", text: "Botón WhatsApp" },
                     ].map(({ icon, text }) => (
-                      <div key={text} className="flex items-center gap-2 text-xs text-gray-300">
+                      <div key={text} style={{display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#d1d5db"}}>
                         <span>{icon}</span><span>{text}</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <button onClick={() => setStep(2)} className="bg-white/5 hover:bg-white/10 active:scale-95 text-white font-semibold py-3.5 rounded-xl text-sm transition-all border border-white/10">← Atrás</button>
-                  <button onClick={() => router.push("/crear")} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 active:scale-95 text-white font-black py-3.5 rounded-xl text-sm shadow-lg shadow-purple-500/30 transition-all">✨ Generar con IA</button>
+                  <button onClick={() => setStep(2)} style={{background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "14px", borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: "pointer"}}>← Atrás</button>
+                  <button onClick={() => router.push("/crear")} style={{background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", padding: "14px", borderRadius: 12, fontSize: 13, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.4)"}}>✨ Generar con IA</button>
                 </div>
               </div>
             )}
           </div>
-          <p className="text-center text-gray-600 text-xs mt-6">🔒 Tus datos están seguros · Sin spam · Cancela cuando quieras</p>
+          <p style={{textAlign: "center", color: "#374151", fontSize: 11, marginTop: 20}}>🔒 Tus datos están seguros · Sin spam · Cancela cuando quieras</p>
         </div>
       </section>
 
       <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.33%); }
-        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { animation: marquee 30s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
       `}</style>
-
     </main>
   );
 }
