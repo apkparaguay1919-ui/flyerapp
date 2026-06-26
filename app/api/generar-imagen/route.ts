@@ -106,3 +106,4 @@ Ultra professional marketing quality.`,
     return NextResponse.json({ error: error?.message || "Error generando imagen" }, { status: 500 });
   }
 }
+
