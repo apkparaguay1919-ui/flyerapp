@@ -89,6 +89,7 @@ Ultra professional marketing quality.`,
     });
 
     const imageData = response.data?.[0];
+    if (!imageData) return NextResponse.json({ error: "No se genero imagen" }, { status: 500 });
     
     if (imageData.b64_json) {
       return NextResponse.json({ 
