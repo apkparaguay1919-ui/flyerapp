@@ -88,7 +88,7 @@ Ultra professional marketing quality.`,
       n: 1,
     });
 
-    const imageData = response.data[0];
+    const imageData = response.data?.[0];
     
     if (imageData.b64_json) {
       return NextResponse.json({ 
