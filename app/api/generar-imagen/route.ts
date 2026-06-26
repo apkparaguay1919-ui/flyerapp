@@ -1,41 +1,26 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
+import { fal } from "@fal-ai/client";
 
 export async function POST(req: NextRequest) {
   try {
-    const { producto, beneficios, precio, pais, estilo } = await req.json();
-
-    const prompt = `Professional product advertisement photo for ${producto}, ${estilo || "premium luxury style"}, dark background with purple and violet gradient lighting, text overlay showing price ${precio} for ${pais || "Paraguay"}, benefits: ${beneficios}, 9:16 vertical format, ultra HD, commercial photography, Bioliffe brand, health and wellness product, dramatic lighting, high contrast, professional studio shot`;
-
-    const response = await fetch("https://fal.run/fal-ai/flux/schnell", {
-      method: "POST",
-      headers: {
-        "Authorization": `Key ${process.env.FAL_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt,
-        image_size: "portrait_9_16",
-        num_inference_steps: 4,
-        num_images: 1,
-        enable_safety_checker: true,
-      }),
+    fal.config({ credentials: process.env.FAL_KEY });
+    const { producto, beneficios, precio, pais, estilo, seccion } = await req.json();
+    const secciones: Record<string, string> = {
+      hero: `Professional product advertisement hero banner, ${producto}, ${estilo || "premium dark luxury"} style, dramatic purple violet gradient lighting, price ${precio} ${pais || "Paraguay"}, benefits: ${beneficios}, 9:16 vertical format, ultra HD commercial photography, bold typography overlay, Bioliffe brand health wellness`,
+      oferta: `Irresistible offer banner for ${producto}, limited time offer design, price ${precio} in ${pais}, urgent red orange accents on dark background, OFERTA badge, multiple units promotion, 9:16 vertical, professional marketing design`,
+      antes_despues: `Before and after transformation split image for ${producto}, left problem state right results after using ${producto}, dramatic lighting, ${pais} market, health transformation, professional studio photography`,
+      testimonios: `Customer testimonials layout for ${producto}, real people photos, star ratings, review quotes about ${beneficios}, professional dark background purple accents, trust badges, 9:16 format`,
+      como_usar: `How to use instructions for ${producto}, 3 step visual guide, clean infographic style dark background, icons illustrations, ${beneficios}, professional health product photography`,
+    };
+    const prompt = secciones[seccion || "hero"];
+    const result = await fal.subscribe("fal-ai/flux/schnell", {
+      input: { prompt, image_size: "portrait_9_16", num_inference_steps: 4, num_images: 1, enable_safety_checker: true },
     });
-
-    if (!response.ok) {
-      const error = await response.text();
-      return NextResponse.json({ error: "Error generando imagen", details: error }, { status: 500 });
-    }
-
-    const data = await response.json();
-    const imageUrl = data.images?.[0]?.url;
-
-    if (!imageUrl) {
-      return NextResponse.json({ error: "No se genero imagen" }, { status: 500 });
-    }
-
-    return NextResponse.json({ imageUrl, prompt });
-  } catch (error) {
-    console.error("Error:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    const imageUrl = (result.data as any)?.images?.[0]?.url;
+    if (!imageUrl) return NextResponse.json({ error: "No se genero imagen" }, { status: 500 });
+    return NextResponse.json({ imageUrl, prompt, seccion: seccion || "hero" });
+  } catch (error: any) {
+    console.error("Error fal.ai:", error);
+    return NextResponse.json({ error: error?.message || "Error generando imagen" }, { status: 500 });
   }
 }
