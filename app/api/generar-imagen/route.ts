@@ -83,7 +83,7 @@ Ultra professional marketing quality.`,
     const response = await client.images.generate({
       model: "gpt-image-1",
       prompt,
-      size: "1024x1792",
+      size: "1024x1536",
       quality: "medium",
       n: 1,
     });

@@ -28,7 +28,7 @@ const SECCIONES = [
 ];
 
 const TAMANOS = [
-  { id: "1024x1792", label: "Instagram Stories (1080×1920) - Recomendado" },
+  { id: "1024x1536", label: "Instagram Stories (1080×1920) - Recomendado" },
   { id: "1024x1024", label: "Feed Instagram (1080×1080)" },
   { id: "1792x1024", label: "Facebook Ads (1920×1080)" },
   { id: "1024x1280", label: "Feed Portrait (1080×1350)" },
@@ -64,7 +64,7 @@ export default function Crear() {
   const [plantillaSeleccionada, setPlantillaSeleccionada] = useState<string | null>(null);
   const [mostrarGaleria, setMostrarGaleria] = useState(false);
   const [seccion, setSeccion] = useState("hero");
-  const [tamano, setTamano] = useState("1024x1792");
+  const [tamano, setTamano] = useState("1024x1536");
   const [idioma, setIdioma] = useState("Español");
   const [pais, setPais] = useState("PY");
   const [productoId, setProductoId] = useState("");
